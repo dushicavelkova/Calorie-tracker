@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: calorie-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: calorie-frontend
+  template:
+    metadata:
+      labels:
+        app: calorie-frontend
+    spec:
+      containers:
+      - name: frontend
+        image: dushicavelkova/calorie-tracker-frontend:latest
+        ports:
+        - containerPort: 80
