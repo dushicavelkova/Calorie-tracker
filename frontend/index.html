@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie & Diet Tracker</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f4f7f6; color: #333; }
+        .container { max-width: 500px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        h2 { text-align: center; }
+        input, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 4px; border: 1px solid #ccc; box-sizing: border-box; }
+        button { background-color: #2ecc71; color: white; font-weight: bold; cursor: pointer; border: none; }
+        button:hover { background-color: #27ae60; }
+        ul { list-style-type: none; padding: 0; }
+        li { background: #eee; margin: 5px 0; padding: 10px; border-radius: 4px; display: flex; justify-content: space-between; }
+        .total { font-weight: bold; text-align: right; margin-top: 15px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Calorie Tracker</h2>
+        <form id="meal-form">
+            <input type="text" id="food" placeholder="Food Name (e.g., Peanuts & Cheese)" required>
+            <input type="number" id="calories" placeholder="Calories" required>
+            <button type="submit">Add Meal</button>
+        </form>
+        <h3>Daily Meals</h3>
+        <ul id="meal-list"></ul>
+        <div class="total" id="total-calories">Total Calories: 0 kcal</div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
