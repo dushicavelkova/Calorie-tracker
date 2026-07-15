@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:5000/api/meals';
+const API_URL = '/api/meals';
 
 document.getElementById('meal-form').addEventListener('submit', async (e) => {
     e.preventDefault();

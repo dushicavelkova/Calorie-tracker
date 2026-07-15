@@ -14,7 +14,7 @@ spec:
     spec:
       containers: 
       - name: backend
-        image: dushicavelkova/calorie-tracker-backend:latest
+        image: dushicavelkova/calorie-backend:latest
         ports:
         - containerPort: 5000
         env:

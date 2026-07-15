@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: dushicavelkova/calorie-tracker-frontend:latest
+        image: dushicavelkova/calorie-frontend:latest
         ports:
         - containerPort: 80
