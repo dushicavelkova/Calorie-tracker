@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: calorie-tracker-ingress
+  namespace: calorie-tracker
   annotations:
     ingress.kubernetes.io/ssl-redirect: "false"
 spec:

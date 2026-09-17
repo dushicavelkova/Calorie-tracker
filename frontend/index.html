@@ -23,17 +23,23 @@
         #percentage { text-align: center; font-weight: bold; }
         .meal-type { font-size: 13px; color: #666; }
         .meal-macros { display: inline; font-size: 14px; color: black; font-weight: bold; }
+        .meal-quantity { font-size: 13px; color: #666; }
     </style>
 </head>
 <body>
     <div class="container">
         <h2>Calorie Tracker</h2>
         <form id="meal-form">
-            <input type="text" id="food" placeholder="Food Name (e.g., Peanuts & Cheese)" required>
-            <input type="number" id="calories" placeholder="Calories" required>
-            <input type="number" id="protein" placeholder="Protein (g)" required>
-            <input type="number" id="carbs" placeholder="Carbs (g)" required>
-            <input type="number" id="fat" placeholder="Fat (g)" required>
+            <!-- <input type="text" id="food" placeholder="Food Name (e.g., Peanuts & Cheese)" required> -->
+            <select id="food" required>
+                <option value="">Select Food</option>
+            </select>
+            <input type="number" id="quantity" placeholder="Quantity" required>
+            <select id="unit" required>
+                <option value="">Select Unit</option>
+                <option value="grams">Grams</option>
+                <option value="pieces">Pieces</option>
+            </select>
             <select id="meal-type" required>
                 <option value="">Select Meal</option>
                 <option value="Breakfast">Breakfast</option>

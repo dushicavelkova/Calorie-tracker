@@ -1,12 +1,56 @@
 const API_URL = '/api/meals';
+const FOODS_API_URL = '/api/foods';
+
+async function loadFoods() {
+    const response = await fetch(FOODS_API_URL);
+    const foods = await response.json();
+
+    const foodSelect = document.getElementById('food');
+
+    foods.forEach(food => {
+        const option = document.createElement('option');
+
+        option.value = food.name;
+        option.textContent = food.name;
+
+        foodSelect.appendChild(option);
+    });
+}
 
 document.getElementById('meal-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const name = document.getElementById('food').value;
-    const calories = parseInt(document.getElementById('calories').value);
-    const protein = parseInt(document.getElementById('protein').value);
-    const carbs = parseInt(document.getElementById('carbs').value);
-    const fat = parseInt(document.getElementById('fat').value);
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const unit = document.getElementById('unit').value;
+    const foodResponse = await fetch(FOODS_API_URL);
+    const foods = await foodResponse.json();
+    const selectedFood = foods.find(food => food.name === name);
+
+    if (!selectedFood) {
+    alert('Избери намирница.');
+    return;
+}
+
+    let calories;
+    let protein;
+    let carbs;
+    let fat;
+
+    if (unit === 'grams') {
+        calories = Math.round((selectedFood.calories_per_100g * quantity) / 100);
+        protein = Math.round((selectedFood.protein_per_100g * quantity) / 100);
+        carbs = Math.round((selectedFood.carbs_per_100g * quantity) / 100);
+        fat = Math.round((selectedFood.fat_per_100g * quantity) / 100);
+    } else {
+        if (selectedFood.calories_per_piece === null) {
+            alert('За оваа намирница користи грамажи.');
+            return;
+        }
+        calories = selectedFood.calories_per_piece * quantity;
+        protein = selectedFood.protein_per_piece * quantity;
+        carbs = selectedFood.carbs_per_piece * quantity;
+        fat = selectedFood.fat_per_piece * quantity;
+}
     const mealType = document.getElementById('meal-type').value;
 
     const response = await fetch(API_URL, {
@@ -14,6 +58,8 @@ document.getElementById('meal-form').addEventListener('submit', async (e) => {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
         name: name,
+        quantity: quantity,
+        unit: unit,
         calories: calories, 
         protein: protein,
         carbs: carbs,
@@ -49,6 +95,7 @@ async function loadMeals() {
         li.innerHTML = `
             <span class="meal-name">${meal.name}</span>
             <span class="meal-type">${meal.meal_type}</span>
+            <span class="meal-quantity">${meal.quantity} ${meal.unit}</span>
             <span class="meal-calories">${meal.calories} kcal</span>
             <span class="meal-macros">
                 P: ${meal.protein}g | C: ${meal.carbs}g | F: ${meal.fat}g
@@ -71,7 +118,7 @@ async function loadMeals() {
         `Total Calories: ${total} kcal`;
 
     document.getElementById('today-calories').innerText = total;
-    
+
     document.getElementById('total-macros').innerText =
     `Protein: ${totalProtein}g | Carbs: ${totalCarbs}g | Fat: ${totalFat}g`;
 
@@ -151,6 +198,7 @@ async function deleteMeal(id) {
 }
 
 loadMeals();
+loadFoods();
 
 function filterMeals(type) {
     const meals = document.querySelectorAll('#meal-list li');
