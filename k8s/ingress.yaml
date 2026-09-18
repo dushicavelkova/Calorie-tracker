@@ -3,9 +3,8 @@ kind: Ingress
 metadata:
   name: calorie-tracker-ingress
   namespace: calorie-tracker
-  annotations:
-    ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  ingressClassName: traefik
   rules:
   - host: calorie-tracker.local
     http:

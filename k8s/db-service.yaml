@@ -4,9 +4,9 @@ metadata:
   name: db-service
   namespace: calorie-tracker
 spec:
+  clusterIP: None
   ports:
   - port: 5432
     targetPort: 5432
   selector:
     app: calorie-db
-  type: ClusterIP

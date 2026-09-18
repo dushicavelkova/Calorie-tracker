@@ -92,14 +92,38 @@ async function loadMeals() {
     meals.forEach(meal => {
         const li = document.createElement('li');
 
+        // li.innerHTML = `
+        //     <span class="meal-name">${meal.name}</span>
+        //     <span class="meal-type">${meal.meal_type}</span>
+        //     <span class="meal-quantity">${meal.quantity} ${meal.unit}</span>
+        //     <span class="meal-calories">${meal.calories} kcal</span>
+        //     <span class="meal-macros">
+        //         P: ${meal.protein}g | C: ${meal.carbs}g | F: ${meal.fat}g
+        //     </span>
+
+        //     <div class="actions">
+        //         <button class="edit-button" onclick="editMeal(${meal.id})">Edit</button>
+        //         <button class="delete-button" onclick="deleteMeal(${meal.id})">Delete</button>
+        //     </div>
+        // `;
         li.innerHTML = `
-            <span class="meal-name">${meal.name}</span>
-            <span class="meal-type">${meal.meal_type}</span>
-            <span class="meal-quantity">${meal.quantity} ${meal.unit}</span>
-            <span class="meal-calories">${meal.calories} kcal</span>
-            <span class="meal-macros">
-                P: ${meal.protein}g | C: ${meal.carbs}g | F: ${meal.fat}g
-            </span>
+            <div class="meal-info">
+                <div class="meal-top">
+                    <span class="meal-name">${meal.name}</span>
+                    <span class="meal-type">${meal.meal_type}</span>
+                </div>
+
+                <div class="meal-details">
+                    <span class="meal-quantity">${meal.quantity} ${meal.unit}</span>
+                    <span class="meal-calories">${meal.calories} kcal</span>
+                </div>
+
+                <div class="meal-macros">
+                    <span>Protein <strong>${meal.protein}g</strong></span>
+                    <span>Carbs <strong>${meal.carbs}g</strong></span>
+                    <span>Fat <strong>${meal.fat}g</strong></span>
+                </div>
+            </div>
 
             <div class="actions">
                 <button class="edit-button" onclick="editMeal(${meal.id})">Edit</button>
