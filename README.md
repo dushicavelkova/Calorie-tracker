@@ -1,33 +1,33 @@
 # Calorie Tracker
 
-## Опис
+## Description
 
-Calorie Tracker е веб-апликација за следење на дневниот внес на храна и калории.
+Calorie Tracker is a web application for tracking daily food intake and calories.
 
-Апликацијата овозможува додавање и управување со оброци, пресметување на калории и макронутриенти и избор на храна од база на податоци.
+The application allows users to add and manage meals, calculate calories and macronutrients, and select food items from a predefined database.
 
-Проектот е реализиран како апликација со три главни сервиси:
+The project is implemented as a three-tier application consisting of:
 
-* **Frontend** – HTML, CSS и JavaScript со Nginx
-* **Backend** – Node.js и Express
+* **Frontend** – HTML, CSS and JavaScript with Nginx
+* **Backend** – Node.js and Express.js
 * **Database** – PostgreSQL
 
-Проектот е containerized со Docker и Docker Compose, а дополнително е поставен и на Kubernetes.
+The application is containerized using Docker and Docker Compose and is also deployed using Kubernetes.
 
-## Функционалности
+## Features
 
-* Додавање оброк
-* Избор на храна од база на податоци
-* Внесување количина и единица
-* Пресметување калории
-* Прикажување протеини, јаглехидрати и масти
-* Филтрирање според тип на оброк
-* Уредување на оброци
-* Бришење на оброци
-* Прикажување на дневен калориски внес
-* Дефинирање на дневна калориска цел
+* Add meals
+* Select food from a predefined food database
+* Enter quantity and unit
+* Calculate calories
+* Track protein, carbohydrates and fat
+* Filter meals by meal type
+* Edit meals
+* Delete meals
+* Display daily calorie intake
+* Set a daily calorie goal
 
-## Технологии
+## Technologies
 
 * HTML
 * CSS
@@ -42,9 +42,9 @@ Calorie Tracker е веб-апликација за следење на днев
 * Docker Hub
 * Nginx
 
-## Архитектура
+## Architecture
 
-Апликацијата се состои од три сервиси:
+The application consists of three main services:
 
 ```text
                 Browser
@@ -61,46 +61,24 @@ Calorie Tracker е веб-апликација за следење на днев
               PostgreSQL
 ```
 
-Frontend комуницира со backend преку HTTP API, а backend ја користи PostgreSQL базата за складирање на податоците.
+The frontend communicates with the backend through an HTTP API, while the backend communicates with PostgreSQL for data storage.
 
 ## Docker
 
-Frontend и backend имаат сопствени Docker images.
+The frontend and backend are containerized using Docker.
 
-### Docker Hub
+### Docker Hub Images
 
 * Backend: `dushicavelkova/calorie-backend`
 * Frontend: `dushicavelkova/calorie-frontend`
 
 ## Docker Compose
 
-Docker Compose се користи за локално стартување на сите сервиси.
+Docker Compose is used to run all application services locally.
 
-Потребно е да се има `.env` фајл со потребните environment variables.
+The database credentials are stored in an `.env` file instead of being hardcoded directly in `docker-compose.yml`.
 
-Стартување:
-
-```bash
-docker compose up --build
-```
-
-Апликацијата потоа е достапна на:
-
-```text
-http://localhost:8080
-```
-
-За запирање на сервисите:
-
-```bash
-docker compose down
-```
-
-## Environment Variables
-
-Чувствителните вредности не се зачувуваат директно во `docker-compose.yml`.
-
-Тие се поставуваат преку `.env`:
+Example:
 
 ```env
 POSTGRES_USER=postgres
@@ -108,51 +86,76 @@ POSTGRES_PASSWORD=your_password
 POSTGRES_DB=calories_db
 ```
 
-`.env` е додаден во `.gitignore` и не се push-ува на GitHub.
+The `.env` file is excluded from Git using `.gitignore`.
+
+### Start the application
+
+```bash
+docker compose up --build
+```
+
+The application is available at:
+
+```text
+http://localhost:8080
+```
+
+### Stop the application
+
+```bash
+docker compose down
+```
 
 ## CI/CD
 
-За автоматизација се користи **GitHub Actions**.
+GitHub Actions is used to automate the build and delivery process.
 
-При секој `push` на `master` branch:
+The workflow is triggered when changes are pushed to the `master` branch.
 
-1. Се checkout-ира repository-то.
-2. GitHub Actions се логира на Docker Hub преку GitHub Secrets.
-3. Се build-ира backend Docker image.
-4. Се push-ува backend image на Docker Hub.
-5. Се build-ира frontend Docker image.
-6. Се push-ува frontend image на Docker Hub.
+The workflow:
 
-Во проектот е имплементиран CI процес за автоматско build и push на Docker images.
+1. Checks out the repository.
+2. Logs in to Docker Hub using GitHub Secrets.
+3. Builds the backend Docker image.
+4. Pushes the backend image to Docker Hub.
+5. Builds the frontend Docker image.
+6. Pushes the frontend image to Docker Hub.
 
-Kubernetes deployment-от моментално се извршува преку Kubernetes manifests.
+The CI workflow is defined in:
+
+```text
+.github/workflows/ci.yml
+```
 
 ## Kubernetes
 
-Kubernetes ресурсите се организирани во посебен namespace:
+The application is also configured for deployment on Kubernetes.
+
+All Kubernetes resources are deployed in the following namespace:
 
 ```text
 calorie-tracker
 ```
 
-Проектот користи:
+The project uses:
 
 * Namespace
-* Deployment за frontend
-* Deployment за backend
-* Service за frontend
-* Service за backend
-* Ingress
-* StatefulSet за PostgreSQL
+* Backend Deployment
+* Frontend Deployment
+* Backend Service
+* Frontend Service
+* PostgreSQL StatefulSet
+* PostgreSQL Service
 * PersistentVolumeClaim
 * ConfigMap
 * Secret
+* Ingress
 
-Frontend и backend користат по две replicas.
+The backend and frontend deployments use two replicas.
 
-PostgreSQL е поставен како StatefulSet бидејќи базата има потреба од persistent storage.
+PostgreSQL is deployed using a StatefulSet because the database requires persistent storage.
 
-## Kubernetes архитектура
+## Kubernetes Architecture
 
 ```text
                     Ingress
@@ -175,62 +178,46 @@ PostgreSQL е поставен како StatefulSet бидејќи базата 
                                   PVC
 ```
 
-Ingress ги рутира HTTP барањата:
+The Ingress routes requests as follows:
 
 ```text
 /       -> frontend-service
 /api    -> backend-service
 ```
 
-## Kubernetes стартување
+### Deploy to Kubernetes
 
-Namespace и останатите ресурси може да се постават со:
+The Kubernetes resources can be deployed using:
 
 ```bash
 kubectl apply -f k8s/
 ```
 
-Проверка на ресурсите:
+Check the running pods:
 
 ```bash
 kubectl get pods -n calorie-tracker
 ```
 
+Check the services:
+
 ```bash
 kubectl get services -n calorie-tracker
 ```
+
+Check the Ingress:
 
 ```bash
 kubectl get ingress -n calorie-tracker
 ```
 
-Апликацијата може да се пристапи преку:
+The application can be accessed through:
 
 ```text
 http://calorie-tracker.local
 ```
 
-## GitHub Repository
-
-GitHub repository:
-
-https://github.com/dushicavelkova/Calorie-tracker
-
-## Docker Images
-
-Backend:
-
-```text
-dushicavelkova/calorie-backend:latest
-```
-
-Frontend:
-
-```text
-dushicavelkova/calorie-frontend:latest
-```
-
-## Структура на проектот
+## Project Structure
 
 ```text
 calorie-tracker/
@@ -268,4 +255,34 @@ calorie-tracker/
 └── README.md
 ```
 
-> Забелешка: `.env` и Kubernetes Secret со вистински credentials не треба да се commit-ираат во јавниот repository.
+## GitHub Repository
+
+[GitHub Repository](https://github.com/dushicavelkova/Calorie-tracker)
+
+## Docker Hub
+
+Backend image:
+
+```text
+dushicavelkova/calorie-backend:latest
+```
+
+Frontend image:
+
+```text
+dushicavelkova/calorie-frontend:latest
+```
+
+## Security
+
+Sensitive configuration values such as database credentials are stored in environment variables and are not committed to the public repository.
+
+The `.env` file is included in `.gitignore`.
+
+Kubernetes database credentials are stored using a Kubernetes Secret.
+
+## Conclusion
+
+Calorie Tracker demonstrates the development and deployment of a containerized web application using a modern software development workflow.
+
+The project combines a frontend, backend and PostgreSQL database with Docker, Docker Compose, Kubernetes, GitHub Actions and Docker Hub.
